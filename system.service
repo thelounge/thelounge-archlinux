@@ -1,6 +1,6 @@
 [Unit]
 Description=The Lounge IRC client
-After=network.target
+After=network-online.target
 
 [Service]
 User=thelounge
