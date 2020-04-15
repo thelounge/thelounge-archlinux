@@ -19,20 +19,22 @@ source=(
 )
 noextract=("$pkgname-$pkgver.tgz")
 sha256sums=('c4058bb9db0ef94480203f88c3d989945c2df0a5636ba3637040ef3e58237846'
-            'c92210f6ac8f01c1cd01b6b26793094cd2feea583ed21fab3564d6bcafdc7a20'
+            '8816c0b871689519f1614dce1805fde9924c03e2ca3d836902f56536ada93840'
             'c609f3309f54bd6285e99ff29ca2464828bec7bbbca67243ee688bd2d605dbf0'
             '30fab63b8a4ffcfdda4c5b8d7c66822a323c4f1de6ca62b77fe9500f4befc0a5'
-            '4060efc92346c7193e699ffe1b802d85dc45daa7b5260ecdf70a6b993c30b01a')
+            '1cac32233da5c8eee576b43fd28cadd29ac3f79cdfdcc94fbb2a4ae529f4f146')
 
 package() {
     export NODE_ENV=production
 
     npm install -g --user root --prefix "$pkgdir/usr" "$pkgname-$pkgver.tgz" --cache "${srcdir}/npm-cache"
 
-    echo /etc/thelounge > "$pkgdir/usr/lib/node_modules/$pkgname/.thelounge_home"
+    echo /etc/thelounge/home > "$pkgdir/usr/lib/node_modules/$pkgname/.thelounge_home"
 
     # add default config
     install -Dm 644 "$pkgdir/usr/lib/node_modules/$pkgname/defaults/config.js" "$pkgdir/etc/thelounge/config.js"
+    mkdir "$pkgdir/etc/thelounge/home"
+    ln -s "../config.js" "$pkgdir/etc/thelounge/home/config.js"
 
     # services
     install -Dm644 "$srcdir/system.service" "$pkgdir/usr/lib/systemd/system/$pkgname.service"
