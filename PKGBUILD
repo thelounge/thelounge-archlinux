@@ -1,7 +1,7 @@
 # Maintainer: Reto Brunner <brunnre8@gmail.com>
 # Maintainer: Maxime Poulin <maxpoulin64@gmail.com>
 pkgname=thelounge
-pkgver=4.4.1
+pkgver=4.4.3
 pkgsuffix="" #-rc.1
 pkgrel=1
 pkgdesc='Modern self-hosted web IRC client'
@@ -22,9 +22,9 @@ source=(
     'tmpfiles.d'
 )
 noextract=("$pkgname-${pkgver}${pkgsuffix}.tgz")
-sha256sums=('957c72feec7a07b22a885fb2e96efc79f784f730ce411ce8758b024e775164e9'
-            '946908b3762977d52ce16b8e3c8cc6eda04d2b5c1a718a8075188971d6bbc63d'
-            '0cefc73b1dc4f8dcbd833bea57bed096aac11e91970fadc43cd75e159cfc8af0'
+sha256sums=('685d753ad080c35ac7c4cf2eef6437df8de47a3d352b10f06d56acc9a08f4f18'
+            '0bcb88814337e6dd1352dd382a14e6c277f71410767277db34c97b998e1cd0b9'
+            'e0cca2931e46842039fcbc78efbecae4b9893608d18959f616aa7ea559311441'
             'c92210f6ac8f01c1cd01b6b26793094cd2feea583ed21fab3564d6bcafdc7a20'
             'c609f3309f54bd6285e99ff29ca2464828bec7bbbca67243ee688bd2d605dbf0'
             '30fab63b8a4ffcfdda4c5b8d7c66822a323c4f1de6ca62b77fe9500f4befc0a5'
@@ -37,7 +37,7 @@ prepare() {
 build() {
     mkdir _build
     cp package.json yarn.lock _build
-    cd _build
+    cd _build || exit 1
 
     # Install the package itself
     # we on purpose don't use yarn global add, because --ignore-scripts
@@ -48,8 +48,8 @@ build() {
     file:"$srcdir/$pkgname-${pkgver}${pkgsuffix}.tgz"
 
     # fetch sqlite3 binary blob
-    cd node_modules/sqlite3
-    ./node_modules/.bin/node-pre-gyp install --fallback-to-build
+    cd node_modules/sqlite3 || exit 1
+    yarn run install
 }
 
 package() {
