@@ -35,7 +35,7 @@ prepare() {
 }
 
 build() {
-    mkdir _build
+    mkdir -p _build
     cp package.json yarn.lock _build
     cd _build || exit 1
 
